@@ -6,23 +6,19 @@ import glob
 import os
 import torch
 from torchvision import transforms
+import numpy as np
 
 
-class ImageDataset_test(Dataset):
-    """Massachusetts Road and Building dataset"""
+class ImageDataset_mine(Dataset):
 
-    def __init__(self, hp, train=True, transform=None):
-        """
-        Args:
-            csv_file (string): Path to the csv file with image paths
-            train_valid_test (string): 'train', 'valid', or 'test'
-            root_dir (string): 'mass_roads', 'mass_roads_crop', or 'mass_buildings'
-            transform (callable, optional): Optional transform to be applied on a sample.
-        """
+    def __init__(self, train=True, transform=None):
+
         self.train = train
-        self.path = hp.train if train else hp.valid
+        self.path = ""
+        if self.train:
+            self.path = "D:\\_Work\\_Research\\Dataset_ResUnet\\Official_frames\\trainset"
         self.mask_list = glob.glob(
-            os.path.join(self.path, "mask_crop", "*.jpg"), recursive=True
+            os.path.join(self.path, "outputs", "*.png"), recursive=True
         )
         self.transform = transform
 
@@ -31,7 +27,10 @@ class ImageDataset_test(Dataset):
 
     def __getitem__(self, idx):
         maskpath = self.mask_list[idx]
-        image = io.imread(maskpath.replace("mask_crop", "input_crop"))
+        image = io.imread(maskpath.replace("outputs", "inputs")) # 这里需要转换成3个channel x 可以不换，注意resunet(1)
+        # image2 = np.dstack((image,image))
+        # image = np.dstack((image2,image))
+        
         mask = io.imread(maskpath)
 
         sample = {"sat_img": image, "map_img": mask}
@@ -65,7 +64,7 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, idx):
         maskpath = self.mask_list[idx]
-        image = io.imread(maskpath.replace("mask_crop", "input_crop"))
+        image = io.imread(maskpath.replace("mask_crop", "input_crop")) # 这里直接读取到的mask是1通道0~255，读到的input是3通道0~255
         mask = io.imread(maskpath)
 
         sample = {"sat_img": image, "map_img": mask}

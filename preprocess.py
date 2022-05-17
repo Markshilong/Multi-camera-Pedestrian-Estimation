@@ -7,10 +7,10 @@ import argparse
 from utils.hparams import HParam
 
 def load_image( infilename) :
-    img = Image.open( infilename )
+    img = Image.open( infilename ) # 这里他是读取png供crop成jpg
     img.load()
     if img.mode == 'P':
-        img.convert('RGB')
+        img.convert('RGB')  # 它这里并没有变成3个通道 我觉得他是想写成：img = img.convert('RGB')
     data = np.asarray( img, dtype="int32" )
     return data
 
