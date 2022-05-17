@@ -65,20 +65,20 @@ def main(hp, num_epochs, resume, name):
             print("=> no checkpoint found at '{}'".format(args.resume))
 
     # get data
-    mass_dataset_train = dataloader.ImageDataset_mine(
+    dataset_train = dataloader.ImageDataset_mine(
         transform=transforms.Compose([dataloader.ToTensorTarget()])
     )
 
-    mass_dataset_val = dataloader.ImageDataset_mine(
+    dataset_val = dataloader.ImageDataset_mine(
         False, transform=transforms.Compose([dataloader.ToTensorTarget()])
     )
 
     # creating loaders
     train_dataloader = DataLoader(
-        mass_dataset_train, batch_size=8, num_workers=0, shuffle=True
+        dataset_train, batch_size=8, num_workers=0, shuffle=True
     )
     val_dataloader = DataLoader(
-        mass_dataset_val, batch_size=1, num_workers=0, shuffle=False
+        dataset_val, batch_size=1, num_workers=0, shuffle=False
     )
 
     step = 0
