@@ -1,6 +1,7 @@
 import warnings
 import sys
-sys.path.append("D:\_Work\_Research\ResUnet") 
+# sys.path.append("D:\_Work\_Research\ResUnet") 
+sys.path.append("/home/grad/Shilong/ResUnet_for_Estimation/") 
 warnings.simplefilter("ignore", (UserWarning, FutureWarning))
 from utils.hparams import HParam
 from torch.utils.data import DataLoader

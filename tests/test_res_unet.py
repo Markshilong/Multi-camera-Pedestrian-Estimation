@@ -1,6 +1,8 @@
 import torch
 import sys
-sys.path.append("D:\_Work\_Research\ResUnet") 
+# sys.path.append("D:\_Work\_Research\ResUnet") 
+sys.path.append("/home/grad/Shilong/ResUnet_for_Estimation/") 
+
 from core.res_unet import ResUnet, ResidualConv, Upsample
 from core.res_unet_plus import ResUnetPlusPlus
 
