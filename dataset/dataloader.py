@@ -17,7 +17,7 @@ class ImageDataset_mine(Dataset):
         self.path = ""
         if self.train:
             # self.path = "D:\\_Work\\_Research\\Dataset_ResUnet\\Official_frames\\trainset" # my PC
-            self.path = "\\home\\grad\\Shilong\\Dataset_ResUnet\\Official_frames\\trainset"
+            self.path = "/home/grad/Shilong/Dataset_ResUnet/Official_frames/trainset"
         self.mask_list = glob.glob(
             os.path.join(self.path, "outputs", "*.png"), recursive=True
         )
