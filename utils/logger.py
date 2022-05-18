@@ -17,19 +17,19 @@ class MyWriter(SummaryWriter):
         self.add_scalar("validation/iou", iou, step)
 
     def log_images(self, map, target, prediction, step):
-        print(f"map.shape={map.shape}, target={target.shape}, prediction={prediction.shape}")
-        if len(map.shape) > 3:
-            print("len(map.shape) > 3")
-            map = map.squeeze(0)
-        if len(target.shape) > 2:
-            print("len(target.shape) > 2")
-            target = target.squeeze()
-        if len(prediction.shape) > 2:
-            print("len(prediction.shape) > 2")
-            prediction = prediction.squeeze()
-        self.add_image("map", map, step)
-        self.add_image("mask", target.unsqueeze(0), step)
-        self.add_image("prediction", prediction.unsqueeze(0), step)
+        # print(f"map.shape={map.shape}, target={target.shape}, prediction={prediction.shape}")
+        # if len(map.shape) > 3:
+        #     print("len(map.shape) > 3")
+        #     map = map.squeeze(0)
+        # if len(target.shape) > 2:
+        #     print("len(target.shape) > 2")
+        #     target = target.squeeze()
+        # if len(prediction.shape) > 2:
+        #     print("len(prediction.shape) > 2")
+        #     prediction = prediction.squeeze()
+        self.add_image("map", map.unsqueeze(1), step)
+        self.add_image("mask", target.unsqueeze(1), step)
+        self.add_image("prediction", prediction.unsqueeze(1), step)
 
 
 class LogWriter(SummaryWriter):
