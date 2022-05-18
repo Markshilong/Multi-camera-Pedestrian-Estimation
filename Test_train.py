@@ -75,10 +75,10 @@ def main(hp, num_epochs, resume, name):
 
     # creating loaders
     train_dataloader = DataLoader(
-        dataset_train, batch_size=8, num_workers=0, shuffle=False
+        dataset_train, batch_size=8, num_workers=8, shuffle=True
     )
     val_dataloader = DataLoader(
-        dataset_val, batch_size=1, num_workers=0, shuffle=False
+        dataset_val, batch_size=1, num_workers=8, shuffle=False
     )
 
     step = 0

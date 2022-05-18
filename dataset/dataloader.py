@@ -14,10 +14,12 @@ class ImageDataset_mine(Dataset):
     def __init__(self, train=True, transform=None):
 
         self.train = train
-        self.path = ""
+        self.path = "/home/grad/Shilong/Dataset_ResUnet/Official_frames/"
         if self.train:
             # self.path = "D:\\_Work\\_Research\\Dataset_ResUnet\\Official_frames\\trainset" # my PC
-            self.path = "/home/grad/Shilong/Dataset_ResUnet/Official_frames/trainset"
+            self.path = self.path+"trainset"
+        else:
+            self.path = self.path+"testset"
         self.mask_list = glob.glob(
             os.path.join(self.path, "outputs", "*.png"), recursive=True
         )
