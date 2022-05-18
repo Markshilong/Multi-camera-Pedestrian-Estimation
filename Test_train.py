@@ -32,7 +32,7 @@ def main(hp, num_epochs, resume, name):
         model = ResUnet(1).cuda()
 
     # set up binary cross entropy and dice loss
-    criterion = metrics.BCEDiceLoss()
+    criterion = metrics.BCEDiceLoss().cuda()
 
     # optimizer
     # optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum, nesterov=True)
