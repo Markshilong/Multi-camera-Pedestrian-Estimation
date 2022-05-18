@@ -98,7 +98,6 @@ def main(hp, num_epochs, resume, name):
 
         loader = tqdm(train_dataloader, desc="training")
         for idx, data in enumerate(loader):
-            if idx==0: print("now enter trainning")
             # get the inputs and wrap in Variable
             inputs = data["sat_img"].cuda()
             labels = data["map_img"].cuda()
