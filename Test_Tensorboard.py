@@ -46,12 +46,12 @@ if resume:
         )
     else:
         print("=> no checkpoint found")
-
+print("we arrive here1")
 for idx, data in enumerate(tqdm(val_dataloader, desc="validation")):
     # get the inputs and wrap in Variable
     inputs = data["sat_img"].cuda()
     labels = data["map_img"].cuda()
-
+    if idx == 0:print("we arrive here2")
     outputs = model(inputs)
     loss = criterion(outputs, labels)
         
