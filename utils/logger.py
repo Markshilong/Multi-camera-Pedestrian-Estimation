@@ -27,9 +27,9 @@ class MyWriter(SummaryWriter):
         # if len(prediction.shape) > 2:
         #     print("len(prediction.shape) > 2")
         #     prediction = prediction.squeeze()
-        self.add_image("map", map.squeeze(1), step)
-        self.add_image("mask", target.squeeze(1), step)
-        self.add_image("prediction", prediction.squeeze(1), step)
+        self.add_image("map", map, step)
+        self.add_image("mask", target, step)
+        self.add_image("prediction", prediction, step)
 
 
 class LogWriter(SummaryWriter):

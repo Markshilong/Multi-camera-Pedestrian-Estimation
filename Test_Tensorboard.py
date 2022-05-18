@@ -18,7 +18,7 @@ dataset_val = dataloader.ImageDataset_mine(
         False, transform=transforms.Compose([dataloader.ToTensorTarget()])
     )
 val_dataloader = DataLoader(
-        dataset_val, batch_size=3, num_workers=0, shuffle=False
+        dataset_val, batch_size=5, num_workers=0, shuffle=False
     )
 
 model = ResUnet(1).cuda()
@@ -54,7 +54,7 @@ for idx, data in enumerate(tqdm(val_dataloader, desc="validation")):
     loss = criterion(outputs, labels)
         
     if idx == 0:
-        writer.log_images(inputs.cpu(), labels.cpu(), outputs.cpu(), 1)
+        writer.log_images(inputs.cpu()[0], labels.cpu()[0], outputs.cpu()[0], 1)
         
 
 # from tensorboard import version; 
