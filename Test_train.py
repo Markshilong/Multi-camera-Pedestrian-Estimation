@@ -83,8 +83,9 @@ def main(hp, num_epochs, resume, name):
 
     step = 0
     for epoch in range(start_epoch, num_epochs):
-        print("Epoch {}/{}".format(epoch, num_epochs - 1))
         print("-" * 10)
+        print("Epoch {}/{}".format(epoch, num_epochs - 1))
+        
 
         # step the learning rate scheduler
         lr_scheduler.step()
@@ -97,7 +98,7 @@ def main(hp, num_epochs, resume, name):
 
         loader = tqdm(train_dataloader, desc="training")
         for idx, data in enumerate(loader):
-
+            if idx==0: print("now enter trainning")
             # get the inputs and wrap in Variable
             inputs = data["sat_img"].cuda()
             labels = data["map_img"].cuda()
