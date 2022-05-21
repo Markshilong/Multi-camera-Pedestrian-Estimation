@@ -21,7 +21,8 @@ class ImageDataset_mine(Dataset):
         else:
             self.path = self.path+"testset"
         self.mask_list = glob.glob(
-            os.path.join(self.path, ("outputs"+str(number)), "*.png"), recursive=True
+            os.path.join(self.path, "outputs", "*.png"), recursive=True
+            # os.path.join(self.path, ("outputs"+str(number)), "*.png"), recursive=True
         )
         self.transform = transform
 
