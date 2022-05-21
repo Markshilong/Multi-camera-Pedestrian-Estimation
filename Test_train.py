@@ -23,7 +23,7 @@ def main(hp, num_epochs, resume, name):
     os.makedirs(checkpoint_dir, exist_ok=True)
 
     os.makedirs("{}/{}".format(hp.log, name), exist_ok=True)
-    writer = MyWriter("{}/{}".format(hp.log, name), flush_secs=10)
+    writer = MyWriter("{}/{}".format(hp.log, name), flush_secs = 10)
     # get model
 
     if hp.RESNET_PLUS_PLUS:

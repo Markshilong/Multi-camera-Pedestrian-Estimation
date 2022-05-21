@@ -5,8 +5,8 @@ import numpy as np
 
 
 class MyWriter(SummaryWriter):
-    def __init__(self, logdir):
-        super(MyWriter, self).__init__(logdir)
+    def __init__(self, logdir, flush_secs=120):
+        super(MyWriter, self).__init__(logdir, flush_secs)
 
     def log_training(self, dice_loss, iou, step):
         self.add_scalar("training/dice_loss", dice_loss, step)
