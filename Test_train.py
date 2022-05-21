@@ -98,7 +98,7 @@ def main(hp, num_epochs, resume, name):
 
         for number in range(1,5):
             dataset_train = dataloader.ImageDataset_mine(
-                transform=transforms.Compose([dataloader.ToTensorTarget()], number=number)
+                transform=transforms.Compose([dataloader.ToTensorTarget()]), number=number
             )
             train_dataloader = DataLoader(
                 dataset_train, batch_size=hp.batch_size, num_workers=8, shuffle=True
