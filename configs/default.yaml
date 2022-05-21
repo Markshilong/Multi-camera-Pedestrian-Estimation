@@ -7,6 +7,6 @@ checkpoints: "checkpoints"
 
 batch_size: 8
 lr: 0.001
-RESNET_PLUS_PLUS: False
+RESNET_PLUS_PLUS: True
 IMAGE_SIZE: 1500
 CROP_SIZE: 224
