@@ -122,7 +122,7 @@ def main(hp, num_epochs, resume, name):
             train_loss.update(loss.data.item(), outputs.size(0))
 
             # tensorboard logging
-            if step!=0 and step % hp.logging_step == 0:
+            if step % hp.logging_step == 0:
                 writer.log_training(train_loss.avg, train_acc.avg, step)
                 loader.set_description(
                     "Training Loss: {:.4f} Acc: {:.4f}".format(
@@ -131,7 +131,7 @@ def main(hp, num_epochs, resume, name):
                 )
 
             # Validatiuon
-            if step!=0 and step % hp.validation_interval == 0:
+            if step % hp.validation_interval == 0:
                 valid_metrics = validation(
                     val_dataloader, model, criterion, writer, step
                 )
