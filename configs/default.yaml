@@ -1,8 +1,8 @@
 train: "/mnt/Karan/ResUnet/data/training"
 valid: "/mnt/Karan/ResUnet/data/testing"
 log: "logs"
-logging_step: 50  # default 100
-validation_interval: 300 # default 2000 Save and valid have same interval
+logging_step: 100  # default 100
+validation_interval: 1000 # default 2000 Save and valid have same interval
 checkpoints: "checkpoints"
 
 batch_size: 4
