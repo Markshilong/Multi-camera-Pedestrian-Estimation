@@ -11,7 +11,7 @@ import numpy as np
 
 class ImageDataset_mine(Dataset):
 
-    def __init__(self, train=True, transform=None):
+    def __init__(self, train=True, transform=None, number=1):
 
         self.train = train
         self.path = "/home/grad/Shilong/Dataset_ResUnet/Extract_frames/"
@@ -21,7 +21,7 @@ class ImageDataset_mine(Dataset):
         else:
             self.path = self.path+"testset"
         self.mask_list = glob.glob(
-            os.path.join(self.path, "outputs", "*.png"), recursive=True
+            os.path.join(self.path, ("outputs"+str(number)), "*.png"), recursive=True
         )
         self.transform = transform
 

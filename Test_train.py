@@ -65,18 +65,18 @@ def main(hp, num_epochs, resume, name):
             print("=> no checkpoint found at '{}'".format(args.resume))
 
     # get data
-    dataset_train = dataloader.ImageDataset_mine(
-        transform=transforms.Compose([dataloader.ToTensorTarget()])
-    )
+    # dataset_train = dataloader.ImageDataset_mine(
+    #     transform=transforms.Compose([dataloader.ToTensorTarget()])
+    # )
 
     dataset_val = dataloader.ImageDataset_mine(
         False, transform=transforms.Compose([dataloader.ToTensorTarget()])
     )
 
     # creating loaders
-    train_dataloader = DataLoader(
-        dataset_train, batch_size=hp.batch_size, num_workers=8, shuffle=True
-    )
+    # train_dataloader = DataLoader(
+    #     dataset_train, batch_size=hp.batch_size, num_workers=8, shuffle=True
+    # )
     val_dataloader = DataLoader(
         dataset_val, batch_size=hp.batch_size, num_workers=8, shuffle=False
     )
@@ -96,63 +96,70 @@ def main(hp, num_epochs, resume, name):
         train_loss = metrics.MetricTracker()
         # iterate over data
 
-        loader = tqdm(train_dataloader, desc="training")
-        for idx, data in enumerate(loader):
-            # get the inputs and wrap in Variable
-            inputs = data["sat_img"].cuda()
-            labels = data["map_img"].cuda()
+        for number in range(1,5):
+            dataset_train = dataloader.ImageDataset_mine(
+                transform=transforms.Compose([dataloader.ToTensorTarget()], number=number)
+            )
+            train_dataloader = DataLoader(
+                dataset_train, batch_size=hp.batch_size, num_workers=8, shuffle=True
+            )
+            loader = tqdm(train_dataloader, desc="training"+str(number))
+            for idx, data in enumerate(loader):
+                # get the inputs and wrap in Variable
+                inputs = data["sat_img"].cuda()
+                labels = data["map_img"].cuda()
 
-            # zero the parameter gradients
-            optimizer.zero_grad()
+                # zero the parameter gradients
+                optimizer.zero_grad()
 
-            # forward
-            # prob_map = model(inputs) # last activation was a sigmoid
-            # outputs = (prob_map > 0.3).float()
-            outputs = model(inputs)
-            # outputs = torch.nn.functional.sigmoid(outputs)
+                # forward
+                # prob_map = model(inputs) # last activation was a sigmoid
+                # outputs = (prob_map > 0.3).float()
+                outputs = model(inputs)
+                # outputs = torch.nn.functional.sigmoid(outputs)
 
-            loss = criterion(outputs, labels)
+                loss = criterion(outputs, labels)
 
-            # backward
-            loss.backward()
-            optimizer.step()
+                # backward
+                loss.backward()
+                optimizer.step()
 
-            train_acc.update(metrics.dice_coeff(outputs, labels), outputs.size(0))
-            train_loss.update(loss.data.item(), outputs.size(0))
+                train_acc.update(metrics.dice_coeff(outputs, labels), outputs.size(0))
+                train_loss.update(loss.data.item(), outputs.size(0))
 
-            # tensorboard logging
-            if step % hp.logging_step == 0:
-                writer.log_training(train_loss.avg, train_acc.avg, step)
-                loader.set_description(
-                    "Training Loss: {:.4f} Acc: {:.4f}".format(
-                        train_loss.avg, train_acc.avg
+                # tensorboard logging
+                if step % hp.logging_step == 0:
+                    writer.log_training(train_loss.avg, train_acc.avg, step)
+                    loader.set_description(
+                        "Training Loss: {:.4f} Acc: {:.4f}".format(
+                            train_loss.avg, train_acc.avg
+                        )
                     )
-                )
 
-            # Validatiuon
-            if step % hp.validation_interval == 0:
-                valid_metrics = validation(
-                    val_dataloader, model, criterion, writer, step
-                )
-                save_path = os.path.join(
-                    checkpoint_dir, "%s_checkpoint_%04d.pt" % (name, step)
-                )
-                # store best loss and save a model checkpoint
-                best_loss = min(valid_metrics["valid_loss"], best_loss)
-                torch.save(
-                    {
-                        "step": step,
-                        "epoch": epoch,
-                        "arch": "ResUnet",
-                        "state_dict": model.state_dict(),
-                        "best_loss": best_loss,
-                        "optimizer": optimizer.state_dict(),
-                    },
-                    save_path,
-                )
-                print("Saved checkpoint to: %s" % save_path)
+                # Validatiuon
+                if step % hp.validation_interval == 0:
+                    valid_metrics = validation(
+                        val_dataloader, model, criterion, writer, step
+                    )
+                    save_path = os.path.join(
+                        checkpoint_dir, "%s_checkpoint_%04d.pt" % (name, step)
+                    )
+                    # store best loss and save a model checkpoint
+                    best_loss = min(valid_metrics["valid_loss"], best_loss)
+                    torch.save(
+                        {
+                            "step": step,
+                            "epoch": epoch,
+                            "arch": "ResUnet",
+                            "state_dict": model.state_dict(),
+                            "best_loss": best_loss,
+                            "optimizer": optimizer.state_dict(),
+                        },
+                        save_path,
+                    )
+                    print("Saved checkpoint to: %s" % save_path)
 
-            step += 1
+                step += 1
 
 
 def validation(valid_loader, model, criterion, logger, step):
