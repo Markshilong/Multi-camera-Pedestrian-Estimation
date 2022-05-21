@@ -1,12 +1,12 @@
 train: "/mnt/Karan/ResUnet/data/training"
 valid: "/mnt/Karan/ResUnet/data/testing"
 log: "logs"
-logging_step: 5  # default 100
-validation_interval: 10 # default 2000 Save and valid have same interval
+logging_step: 50  # default 100
+validation_interval: 375 # default 2000 Save and valid have same interval
 checkpoints: "checkpoints"
 
 batch_size: 16
 lr: 0.001
-RESNET_PLUS_PLUS: False
+RESNET_PLUS_PLUS: True
 IMAGE_SIZE: 1500
 CROP_SIZE: 224
