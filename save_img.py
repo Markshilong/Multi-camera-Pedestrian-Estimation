@@ -112,32 +112,34 @@ def main(hp, num_epochs, resume, name):
         # orch.Size([2, 1, 672, 224])
         zz = outputs.cpu().detach()[0][0].numpy()
         zz = zz.astype(np.uint8)
-        im = Image.fromarray(zz)
-        im.save(savepath+"{:>06d}.png".format(img_id))
+        print(zz.max())
+        break
+        # im = Image.fromarray(zz)
+        # im.save(savepath+"{:>06d}.png".format(img_id))
         # outputs = torch.nn.functional.sigmoid(outputs)
 
         # loss = criterion(outputs, labels)
 
 
-    loader = tqdm(val_dataloader, desc="validation")
-    for idx, data in enumerate(loader):
-        img_id = idx + 11001
-        # get the inputs and wrap in Variable
-        inputs = data["sat_img"].cuda()
-        # labels = data["map_img"].cuda()
+    # loader = tqdm(val_dataloader, desc="validation")
+    # for idx, data in enumerate(loader):
+    #     img_id = idx + 11001
+    #     # get the inputs and wrap in Variable
+    #     inputs = data["sat_img"].cuda()
+    #     # labels = data["map_img"].cuda()
 
-        # zero the parameter gradients
-        optimizer.zero_grad()
+    #     # zero the parameter gradients
+    #     optimizer.zero_grad()
 
-        # forward
-        # prob_map = model(inputs) # last activation was a sigmoid
-        # outputs = (prob_map > 0.3).float()
-        outputs = model(inputs)
-        # orch.Size([2, 1, 672, 224])
-        zz = outputs.cpu().detach()[0][0].numpy()
-        zz = zz.astype(np.uint8)
-        im = Image.fromarray(zz)
-        im.save(savepath.replace('trainset','testset')+"{:>06d}.png".format(img_id))
+    #     # forward
+    #     # prob_map = model(inputs) # last activation was a sigmoid
+    #     # outputs = (prob_map > 0.3).float()
+    #     outputs = model(inputs)
+    #     # orch.Size([2, 1, 672, 224])
+    #     zz = outputs.cpu().detach()[0][0].numpy()
+    #     zz = zz.astype(np.uint8)
+    #     im = Image.fromarray(zz)
+    #     im.save(savepath.replace('trainset','testset')+"{:>06d}.png".format(img_id))
         # outputs = torch.nn.functional.sigmoid(outputs)
 
         # loss = criterion(outputs, labels)
