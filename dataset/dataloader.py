@@ -14,9 +14,9 @@ class ImageDataset_mine(Dataset):
     def __init__(self, train=True, transform=None, number=1):
 
         self.train = train
-        # self.path = "/home/grad/Shilong/Dataset_ResUnet/Extract_frames/"
+        self.path = "/home/grad/Shilong/Dataset_ResUnet/Extract_Frames/"
         # self.path = "D:/_Work/_Research/Dataset_ResUnet/Extract_frames/"
-        self.path = "/root/autodl-tmp/Extract_frames/"
+        # self.path = "/root/autodl-tmp/Extract_frames/"
         if self.train:
             self.path = self.path+"trainset"
         else:
