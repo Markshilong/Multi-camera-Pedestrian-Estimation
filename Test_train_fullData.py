@@ -31,6 +31,7 @@ def main(hp, num_epochs, resume, name):
     else:
         model = ResUnet(1).cuda()
 
+    model = torch.nn.DataParallel(model)
     # set up binary cross entropy and dice loss
     criterion = metrics.BCEDiceLoss()
 
