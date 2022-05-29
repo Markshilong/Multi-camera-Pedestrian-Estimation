@@ -17,12 +17,14 @@ import argparse
 import os
 from PIL import Image
 import numpy as np
+from skimage import io
+
 
 
 def main(hp, num_epochs, resume, name):
 
-    checkpoint_dir = "{}/{}".format(hp.checkpoints, name)
-    os.makedirs(checkpoint_dir, exist_ok=True)
+    # checkpoint_dir = "{}/{}".format(hp.checkpoints, name)
+    # os.makedirs(checkpoint_dir, exist_ok=True)
 
     # os.makedirs("{}/{}".format(hp.log, name), exist_ok=True)
     # writer = MyWriter("{}/{}".format(hp.log, name), flush_secs = 10)
@@ -66,48 +68,46 @@ def main(hp, num_epochs, resume, name):
         else:
             print("=> no checkpoint found at '{}'".format(args.resume))
 
-    # get data
-    dataset_train = dataloader.ImageDataset_mine(
-        transform=transforms.Compose([dataloader.ToTensorTarget()])
-    )
+    # # get data
+    # dataset_train = dataloader.ImageDataset_mine(
+    #     transform=transforms.Compose([dataloader.ToTensorTarget()])
+    # )
 
-    dataset_val = dataloader.ImageDataset_mine(
-        False, transform=transforms.Compose([dataloader.ToTensorTarget()])
-    )
+    # dataset_val = dataloader.ImageDataset_mine(
+    #     False, transform=transforms.Compose([dataloader.ToTensorTarget()])
+    # )
 
-    # creating loaders
-    train_dataloader = DataLoader(
-        dataset_train, batch_size=hp.batch_size, num_workers=0, shuffle=False
-    )
-    val_dataloader = DataLoader(
-        dataset_val, batch_size=hp.batch_size, num_workers=0, shuffle=False
-    )
+    # # creating loaders
+    # train_dataloader = DataLoader(
+    #     dataset_train, batch_size=hp.batch_size, num_workers=0, shuffle=False
+    # )
+    # val_dataloader = DataLoader(
+    #     dataset_val, batch_size=hp.batch_size, num_workers=0, shuffle=False
+    # )
 
 
         
     # step the learning rate scheduler
-    lr_scheduler.step()
+    # lr_scheduler.step()
 
     # run training and validation
     # logging accuracy and loss
     # train_acc = metrics.MetricTracker()
     # train_loss = metrics.MetricTracker()
     # iterate over data
-    savepath = '/root/autodl-tmp/Extract_frames/trainset/predicts/'
-        
-    loader = tqdm(train_dataloader, desc="training")
-    for idx, data in enumerate(loader):
-        img_id = idx + 17
+    savepath = '/home/grad/Shilong/Dataset_ResUnet/Extract_Frames/testset/predicts_2/'
+    
+    
+    transform=transforms.Compose([dataloader.ToTensorTarget()])
+    loader = tqdm(range(5,2000,5), desc="vali")
+    for img_id in loader:
         # get the inputs and wrap in Variable
-        inputs = data["sat_img"].cuda()
-        # labels = data["map_img"].cuda()
-
-        # zero the parameter gradients
-        optimizer.zero_grad()
-
-        # forward
-        # prob_map = model(inputs) # last activation was a sigmoid
-        # outputs = (prob_map > 0.3).float()
+        path = '/home/grad/Shilong/Dataset_ResUnet/Extract_Frames/testset/inputs/{:06d}.png'.format(img_id)
+        img = io.imread(path)
+        mask = io.imread(path.replace('inputs','outputs'))
+        sample = {"sat_img": img, "map_img": mask}
+        data = transform(sample)
+        inputs = data["sat_img"].unsqueeze(0).cuda()
         outputs = model(inputs)
         # orch.Size([2, 1, 672, 224])
         zz = outputs.cpu().detach()[0][0].numpy()*255
@@ -118,26 +118,7 @@ def main(hp, num_epochs, resume, name):
 
 
 
-    loader = tqdm(val_dataloader, desc="validation")
-    for idx, data in enumerate(loader):
-        img_id = idx + 11001
-        # get the inputs and wrap in Variable
-        inputs = data["sat_img"].cuda()
-        # labels = data["map_img"].cuda()
-
-        # zero the parameter gradients
-        optimizer.zero_grad()
-
-        # forward
-        # prob_map = model(inputs) # last activation was a sigmoid
-        # outputs = (prob_map > 0.3).float()
-        outputs = model(inputs)
-        # orch.Size([2, 1, 672, 224])
-        zz = outputs.cpu().detach()[0][0].numpy()*255
-        zz = zz.astype(np.uint8)
-        im = Image.fromarray(zz)
-        im.save(savepath.replace('trainset','testset')+"{:>06d}.png".format(img_id))
-        # outputs = torch.nn.functional.sigmoid(outputs)
+    
 
         # loss = criterion(outputs, labels)
 
