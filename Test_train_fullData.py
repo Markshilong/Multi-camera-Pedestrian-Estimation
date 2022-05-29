@@ -37,7 +37,8 @@ def main(hp, num_epochs, resume, name):
     # optimizer
     # optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum, nesterov=True)
     # optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
-    optimizer = torch.optim.Adam(model.parameters(), lr=hp.lr)
+    # optimizer = torch.optim.Adam(model.parameters(), lr=hp.lr)  # 源码使用的
+    optimizer = torch.optim.Adam(model.parameters(), lr=hp.lr, weight_decay=1e-5)
 
     # decay LR
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.1)
